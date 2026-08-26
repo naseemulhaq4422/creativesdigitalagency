@@ -1,0 +1,84 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  category    String
+  description String
+  icon        String
+  features    String
+  popular     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Course {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  level         String   @default("Beginner Friendly (Zero to Hero)")
+  duration      String
+  description   String
+  syllabus      String
+  badge         String?
+  price         String?
+  upcomingBatch String
+  icon          String
+  popular       Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
+
+model Project {
+  id           String   @id @default(cuid())
+  title        String
+  client       String
+  category     String
+  description  String
+  image        String
+  tags         String
+  deliverables String
+  featured     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  company   String
+  avatar    String?
+  content   String
+  rating    Int      @default(5)
+  type      String   @default("client") // "client" | "student"
+  verified  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Inquiry {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  phone         String
+  type          String   @default("agency_quote") // "agency_quote" | "institute_enrollment"
+  interest      String?
+  budgetOrBatch String?
+  message       String
+  status        String   @default("NEW") // "NEW" | "CONTACTED" | "CONVERTED"
+  createdAt     DateTime @default(now())
+}
+
+model Stat {
+  id          String @id @default(cuid())
+  label       String
+  value       Int
+  suffix      String @default("+")
+  description String
+  order       Int    @default(0)
+}
