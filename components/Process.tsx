@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { Search, Compass, Code, Rocket, Sparkles, ArrowRight } from "lucide-react";
@@ -52,38 +52,39 @@ export default function Process() {
           </p>
         </div>
 
-        {/* Steps Grid */}
+        {/* Steps Grid with Safe Array Handling */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-          {steps.map((step, idx) => (
-            <div
-              key={idx}
-              className="glass-card p-7 rounded-2xl relative flex flex-col justify-between border border-white/10 hover:border-brand-purple/40 transition-all duration-300 transform hover:-translate-y-1"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="p-3 rounded-xl bg-white/5 border border-white/10">
-                    {step.icon}
-                  </span>
-                  <span className="text-3xl font-black font-mono text-white/20">
-                    {step.num}
-                  </span>
+          {Array.isArray(steps) && steps.length > 0 &&
+            steps.map((step, idx) => (
+              <div
+                key={idx}
+                className="glass-card p-7 rounded-2xl relative flex flex-col justify-between border border-white/10 hover:border-brand-purple/40 transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="p-3 rounded-xl bg-white/5 border border-white/10">
+                      {step.icon}
+                    </span>
+                    <span className="text-3xl font-black font-mono text-white/20">
+                      {step.num}
+                    </span>
+                  </div>
+
+                  <h3 className="text-lg font-bold text-white mb-2.5">
+                    {step.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    {step.desc}
+                  </p>
                 </div>
 
-                <h3 className="text-lg font-bold text-white mb-2.5">
-                  {step.title}
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  {step.desc}
-                </p>
+                {idx < steps.length - 1 && (
+                  <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-20 text-white/20">
+                    <ArrowRight className="w-6 h-6" />
+                  </div>
+                )}
               </div>
-
-              {idx < steps.length - 1 && (
-                <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-20 text-white/20">
-                  <ArrowRight className="w-6 h-6" />
-                </div>
-              )}
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </section>

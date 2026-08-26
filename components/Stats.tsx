@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Award, Users, CheckCircle, Globe2, TrendingUp, Sparkles } from "lucide-react";
+import { Award, Users, CheckCircle, Globe2, Sparkles } from "lucide-react";
 
 interface StatItem {
   value: string;
@@ -63,67 +63,68 @@ export default function Stats() {
           </p>
         </div>
 
-        {/* Stats Grid */}
+        {/* Stats Grid with Safe Array Handling */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat, idx) => (
-            <div
-              key={idx}
-              className={`glass-card p-7 rounded-2xl relative overflow-hidden transition-all duration-300 ${
-                stat.accent === "purple"
-                  ? "hover:border-brand-purple/50 hover:shadow-glow-purple"
-                  : stat.accent === "cyan"
-                  ? "hover:border-brand-cyan/50 hover:shadow-glow-cyan"
-                  : stat.accent === "pink"
-                  ? "hover:border-pink-500/50 hover:shadow-[0_0_35px_-5px_rgba(236,72,153,0.3)]"
-                  : "hover:border-emerald-500/50 hover:shadow-[0_0_35px_-5px_rgba(16,185,129,0.3)]"
-              } transform hover:-translate-y-1`}
-            >
-              {/* Corner accent glow */}
+          {Array.isArray(stats) && stats.length > 0 &&
+            stats.map((stat, idx) => (
               <div
-                className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-2xl opacity-20 pointer-events-none ${
+                key={idx}
+                className={`glass-card p-7 rounded-2xl relative overflow-hidden transition-all duration-300 ${
                   stat.accent === "purple"
-                    ? "bg-brand-purple"
+                    ? "hover:border-brand-purple/50 hover:shadow-glow-purple"
                     : stat.accent === "cyan"
-                    ? "bg-brand-cyan"
+                    ? "hover:border-brand-cyan/50 hover:shadow-glow-cyan"
                     : stat.accent === "pink"
-                    ? "bg-pink-500"
-                    : "bg-emerald-500"
-                }`}
-              />
-
-              <div className="flex items-center justify-between mb-4">
-                <span className="p-3 rounded-xl bg-white/5 border border-white/10">
-                  {stat.icon}
-                </span>
-                <span className="text-xs font-mono font-medium text-slate-500">
-                  0{idx + 1}
-                </span>
-              </div>
-
-              <div className="text-4xl sm:text-5xl font-black tracking-tight text-white mb-2 font-mono">
-                <span
-                  className={
+                    ? "hover:border-pink-500/50 hover:shadow-[0_0_35px_-5px_rgba(236,72,153,0.3)]"
+                    : "hover:border-emerald-500/50 hover:shadow-[0_0_35px_-5px_rgba(16,185,129,0.3)]"
+                } transform hover:-translate-y-1`}
+              >
+                {/* Corner accent glow */}
+                <div
+                  className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-2xl opacity-20 pointer-events-none ${
                     stat.accent === "purple"
-                      ? "text-gradient-purple"
+                      ? "bg-brand-purple"
                       : stat.accent === "cyan"
-                      ? "text-gradient-cyan"
+                      ? "bg-brand-cyan"
                       : stat.accent === "pink"
-                      ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-400"
-                      : "text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400"
-                  }
-                >
-                  {stat.value}
-                </span>
-              </div>
+                      ? "bg-pink-500"
+                      : "bg-emerald-500"
+                  }`}
+                />
 
-              <h3 className="text-base font-bold text-white mb-1.5">
-                {stat.label}
-              </h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                {stat.subtext}
-              </p>
-            </div>
-          ))}
+                <div className="flex items-center justify-between mb-4">
+                  <span className="p-3 rounded-xl bg-white/5 border border-white/10">
+                    {stat.icon}
+                  </span>
+                  <span className="text-xs font-mono font-medium text-slate-500">
+                    0{idx + 1}
+                  </span>
+                </div>
+
+                <div className="text-4xl sm:text-5xl font-black tracking-tight text-white mb-2 font-mono">
+                  <span
+                    className={
+                      stat.accent === "purple"
+                        ? "text-gradient-purple"
+                        : stat.accent === "cyan"
+                        ? "text-gradient-cyan"
+                        : stat.accent === "pink"
+                        ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-400"
+                        : "text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400"
+                    }
+                  >
+                    {stat.value}
+                  </span>
+                </div>
+
+                <h3 className="text-base font-bold text-white mb-1.5">
+                  {stat.label}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {stat.subtext}
+                </p>
+              </div>
+            ))}
         </div>
       </div>
     </section>

@@ -1,7 +1,7 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
-import { Check, Sparkles, ArrowRight, Zap, Briefcase, GraduationCap } from "lucide-react";
+import { Check, Sparkles, ArrowRight, Briefcase, GraduationCap } from "lucide-react";
 
 export default function Pricing() {
   const [pricingType, setPricingType] = useState<"agency" | "institute">("agency");
@@ -28,7 +28,7 @@ export default function Pricing() {
       desc: "Ideal for commercial vehicle distributors, engineering works, and scaling retail brands.",
       popular: true,
       features: [
-        "Full-Stack Next.js 15 High-Speed Web Application",
+        "Full-Stack Next.js High-Speed Web Application",
         "Multi-Platform Paid Meta & TikTok Ad Campaign Setup",
         "10x High-CTR 4K Thumbnails & Video Commercial Edits",
         "Complete 3D Product & Corporate Identity Manual",
@@ -148,65 +148,68 @@ export default function Pricing() {
           </div>
         </div>
 
-        {/* Cards Grid */}
+        {/* Cards Grid with Safe Array Handling */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {currentPlans.map((plan, idx) => (
-            <div
-              key={idx}
-              className={`glass-card p-8 rounded-3xl relative flex flex-col justify-between border transition-all duration-300 ${
-                plan.popular
-                  ? "border-brand-purple shadow-glow-purple scale-105 z-10 bg-[#0F172A]/90"
-                  : "border-white/10 hover:border-white/20"
-              }`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-extrabold bg-gradient-to-r from-brand-purple to-pink-500 text-white shadow-lg">
-                  🔥 Most Popular Choice
-                </div>
-              )}
-
-              <div>
-                <h3 className="text-xl font-bold text-white mb-2">
-                  {plan.name}
-                </h3>
-                <p className="text-xs text-slate-300 mb-6 leading-relaxed">
-                  {plan.desc}
-                </p>
-
-                <div className="mb-6 pb-6 border-b border-white/10">
-                  <div className="text-4xl font-black text-white">
-                    {plan.price}
-                  </div>
-                  <div className="text-xs text-slate-400 mt-1">
-                    {plan.period}
-                  </div>
-                </div>
-
-                <div className="space-y-3 mb-8">
-                  {plan.features.map((feat, fIdx) => (
-                    <div key={fIdx} className="flex items-start gap-2.5 text-xs text-slate-200">
-                      <div className="p-0.5 rounded-full bg-emerald-500/20 text-emerald-400 mt-0.5">
-                        <Check className="w-3.5 h-3.5" />
-                      </div>
-                      <span>{feat}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <a
-                href="#contact"
-                className={`w-full py-3.5 px-4 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-2 transition-all ${
+          {Array.isArray(currentPlans) && currentPlans.length > 0 &&
+            currentPlans.map((plan, idx) => (
+              <div
+                key={idx}
+                className={`glass-card p-8 rounded-3xl relative flex flex-col justify-between border transition-all duration-300 ${
                   plan.popular
-                    ? "bg-gradient-to-r from-brand-purple to-purple-600 hover:from-purple-500 hover:to-brand-purple text-white shadow-glow-purple"
-                    : "bg-white/10 hover:bg-white/20 text-white border border-white/10"
+                    ? "border-brand-purple shadow-glow-purple scale-105 z-10 bg-[#0F172A]/90"
+                    : "border-white/10 hover:border-white/20"
                 }`}
               >
-                <span>{pricingType === "agency" ? "Select Agency Plan" : "Enroll in this Batch"}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-          ))}
+                {plan.popular && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-extrabold bg-gradient-to-r from-brand-purple to-pink-500 text-white shadow-lg">
+                    🔥 Most Popular Choice
+                  </div>
+                )}
+
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-2">
+                    {plan.name}
+                  </h3>
+                  <p className="text-xs text-slate-300 mb-6 leading-relaxed">
+                    {plan.desc}
+                  </p>
+
+                  <div className="mb-6 pb-6 border-b border-white/10">
+                    <div className="text-4xl font-black text-white">
+                      {plan.price}
+                    </div>
+                    <div className="text-xs text-slate-400 mt-1">
+                      {plan.period}
+                    </div>
+                  </div>
+
+                  {/* Features List with Safe Array Handling */}
+                  <div className="space-y-3 mb-8">
+                    {Array.isArray(plan.features) && plan.features.length > 0 &&
+                      plan.features.map((feat, fIdx) => (
+                        <div key={fIdx} className="flex items-start gap-2.5 text-xs text-slate-200">
+                          <div className="p-0.5 rounded-full bg-emerald-500/20 text-emerald-400 mt-0.5">
+                            <Check className="w-3.5 h-3.5" />
+                          </div>
+                          <span>{feat}</span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                <a
+                  href="#contact"
+                  className={`w-full py-3.5 px-4 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-2 transition-all ${
+                    plan.popular
+                      ? "bg-gradient-to-r from-brand-purple to-purple-600 hover:from-purple-500 hover:to-brand-purple text-white shadow-glow-purple"
+                      : "bg-white/10 hover:bg-white/20 text-white border border-white/10"
+                  }`}
+                >
+                  <span>{pricingType === "agency" ? "Select Agency Plan" : "Enroll in this Batch"}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            ))}
         </div>
       </div>
     </section>

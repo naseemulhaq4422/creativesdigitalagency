@@ -11,14 +11,12 @@ import {
   ArrowRight, 
   ChevronDown, 
   ChevronUp, 
-  HelpCircle,
-  Laptop,
-  Users2,
-  ShieldCheck,
-  DollarSign,
-  PenTool,
-  Megaphone,
-  Terminal
+  Laptop, 
+  Users2, 
+  DollarSign, 
+  PenTool, 
+  Megaphone, 
+  Terminal 
 } from "lucide-react";
 
 interface CourseItem {
@@ -165,88 +163,90 @@ export default function InstituteSection() {
           </div>
         </div>
 
-        {/* Courses Highlights Grid */}
+        {/* Courses Highlights Grid with Safe Array Handling */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-          {courses.map((course) => (
-            <div
-              key={course.id}
-              className="glass-card rounded-2xl p-7 flex flex-col justify-between border border-white/10 hover:border-brand-cyan/50 transition-all duration-300 shadow-xl relative"
-            >
-              {/* Badge */}
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-brand-cyan/15 text-brand-cyan border border-brand-cyan/30 self-start mb-4">
-                <Sparkles className="w-3 h-3" />
-                {course.badge}
-              </div>
-
-              <div>
-                {/* Header */}
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-                    {course.icon}
-                  </div>
-                  <div>
-                    <span className="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider block">
-                      {course.level}
-                    </span>
-                    <h3 className="text-lg font-bold text-white">
-                      {course.title}
-                    </h3>
-                  </div>
-                </div>
-
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6">
-                  {course.description}
-                </p>
-
-                {/* Batch & Duration metadata */}
-                <div className="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-white/5 border border-white/10 mb-6 text-xs">
-                  <div className="flex items-center gap-2 text-slate-300">
-                    <Clock className="w-4 h-4 text-brand-cyan" />
-                    <span>{course.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-slate-300">
-                    <Calendar className="w-4 h-4 text-brand-purple" />
-                    <span>{course.upcomingBatch}</span>
-                  </div>
-                </div>
-
-                {/* Collapsible Syllabus */}
-                <div className="mb-6">
-                  <button
-                    onClick={() => toggleSyllabus(course.id)}
-                    className="w-full flex items-center justify-between text-xs font-bold text-slate-200 py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
-                  >
-                    <span>View Course Modules & Syllabus</span>
-                    {expandedSyllabus === course.id ? (
-                      <ChevronUp className="w-4 h-4 text-brand-cyan" />
-                    ) : (
-                      <ChevronDown className="w-4 h-4 text-slate-400" />
-                    )}
-                  </button>
-
-                  {expandedSyllabus === course.id && (
-                    <div className="mt-3 space-y-2 text-xs text-slate-300 p-3 rounded-xl bg-black/40 border border-white/5 animate-in fade-in duration-200">
-                      {course.syllabus.map((item, sIdx) => (
-                        <div key={sIdx} className="flex items-start gap-2">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-brand-cyan flex-shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Action Button */}
-              <a
-                href="#contact"
-                className="w-full py-3.5 px-4 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-2 bg-gradient-to-r from-brand-cyan to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-[#080B11] shadow-glow-sm-cyan transition-all"
+          {Array.isArray(courses) && courses.length > 0 &&
+            courses.map((course) => (
+              <div
+                key={course.id}
+                className="glass-card rounded-2xl p-7 flex flex-col justify-between border border-white/10 hover:border-brand-cyan/50 transition-all duration-300 shadow-xl relative"
               >
-                <span>Enroll in Next Batch Today</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-          ))}
+                {/* Badge */}
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-brand-cyan/15 text-brand-cyan border border-brand-cyan/30 self-start mb-4">
+                  <Sparkles className="w-3 h-3" />
+                  {course.badge}
+                </div>
+
+                <div>
+                  {/* Header */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 rounded-xl bg-white/5 border border-white/10">
+                      {course.icon}
+                    </div>
+                    <div>
+                      <span className="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider block">
+                        {course.level}
+                      </span>
+                      <h3 className="text-lg font-bold text-white">
+                        {course.title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6">
+                    {course.description}
+                  </p>
+
+                  {/* Batch & Duration metadata */}
+                  <div className="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-white/5 border border-white/10 mb-6 text-xs">
+                    <div className="flex items-center gap-2 text-slate-300">
+                      <Clock className="w-4 h-4 text-brand-cyan" />
+                      <span>{course.duration}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-300">
+                      <Calendar className="w-4 h-4 text-brand-purple" />
+                      <span>{course.upcomingBatch}</span>
+                    </div>
+                  </div>
+
+                  {/* Collapsible Syllabus with Safe Array Handling */}
+                  <div className="mb-6">
+                    <button
+                      onClick={() => toggleSyllabus(course.id)}
+                      className="w-full flex items-center justify-between text-xs font-bold text-slate-200 py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                    >
+                      <span>View Course Modules & Syllabus</span>
+                      {expandedSyllabus === course.id ? (
+                        <ChevronUp className="w-4 h-4 text-brand-cyan" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4 text-slate-400" />
+                      )}
+                    </button>
+
+                    {expandedSyllabus === course.id && (
+                      <div className="mt-3 space-y-2 text-xs text-slate-300 p-3 rounded-xl bg-black/40 border border-white/5 animate-in fade-in duration-200">
+                        {Array.isArray(course.syllabus) && course.syllabus.length > 0 &&
+                          course.syllabus.map((item, sIdx) => (
+                            <div key={sIdx} className="flex items-start gap-2">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-brand-cyan flex-shrink-0 mt-0.5" />
+                              <span>{item}</span>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Action Button */}
+                <a
+                  href="#contact"
+                  className="w-full py-3.5 px-4 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-2 bg-gradient-to-r from-brand-cyan to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-[#080B11] shadow-glow-sm-cyan transition-all"
+                >
+                  <span>Enroll in Next Batch Today</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            ))}
         </div>
 
         {/* Bottom Banner Call to Action */}

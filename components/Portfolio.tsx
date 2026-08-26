@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { 
   Sparkles, 
-  ExternalLink, 
-  Tag, 
   Briefcase, 
   CheckCircle2, 
   X, 
@@ -146,7 +144,9 @@ export default function Portfolio() {
   const filteredProjects =
     activeCategory === "All"
       ? projects
-      : projects.filter((p) => p.category === activeCategory);
+      : Array.isArray(projects)
+      ? projects.filter((p) => p && p.category === activeCategory)
+      : [];
 
   return (
     <section id="portfolio" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#080B11] relative">
@@ -170,95 +170,103 @@ export default function Portfolio() {
 
         {/* Category Filter Tabs */}
         <div className="flex items-center justify-center flex-wrap gap-2.5 mb-14">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
-                activeCategory === cat
-                  ? "bg-gradient-to-r from-brand-purple to-brand-cyan text-white shadow-glow-sm-purple scale-105"
-                  : "bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:bg-white/10"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+          {Array.isArray(categories) && categories.length > 0 &&
+            categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                  activeCategory === cat
+                    ? "bg-gradient-to-r from-brand-purple to-brand-cyan text-white shadow-glow-sm-purple scale-105"
+                    : "bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:bg-white/10"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
         </div>
 
-        {/* Projects Grid */}
+        {/* Projects Grid with Safe Array Handling */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => (
-            <div
-              key={project.id}
-              onClick={() => setSelectedProject(project)}
-              className="glass-card rounded-2xl overflow-hidden cursor-pointer group glass-card-hover flex flex-col justify-between"
-            >
-              {/* Image Container */}
-              <div className="relative h-60 w-full overflow-hidden bg-slate-900">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110 opacity-80 group-hover:opacity-100"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0D131F] via-transparent to-black/40" />
+          {Array.isArray(filteredProjects) && filteredProjects.length > 0 ? (
+            filteredProjects.map((project) => (
+              <div
+                key={project.id}
+                onClick={() => setSelectedProject(project)}
+                className="glass-card rounded-2xl overflow-hidden cursor-pointer group glass-card-hover flex flex-col justify-between"
+              >
+                {/* Image Container */}
+                <div className="relative h-60 w-full overflow-hidden bg-slate-900">
+                  <Image
+                    src={project.image || "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=1200&auto=format&fit=crop"}
+                    alt={project.title || "Project"}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D131F] via-transparent to-black/40" />
 
-                {/* Badge */}
-                {project.badge && (
-                  <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-[11px] font-bold bg-[#080B11]/80 backdrop-blur-md border border-white/10 text-brand-cyan">
-                    {project.badge}
+                  {/* Badge */}
+                  {project.badge && (
+                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-[11px] font-bold bg-[#080B11]/80 backdrop-blur-md border border-white/10 text-brand-cyan">
+                      {project.badge}
+                    </div>
+                  )}
+
+                  {/* Quick View Icon */}
+                  <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#080B11]/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Eye className="w-4 h-4 text-brand-cyan" />
                   </div>
-                )}
 
-                {/* Quick View Icon */}
-                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#080B11]/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Eye className="w-4 h-4 text-brand-cyan" />
+                  {/* Category tag */}
+                  <div className="absolute bottom-3 left-4 text-[11px] font-semibold text-brand-purple-light uppercase tracking-wider">
+                    {project.category}
+                  </div>
                 </div>
 
-                {/* Category tag */}
-                <div className="absolute bottom-3 left-4 text-[11px] font-semibold text-brand-purple-light uppercase tracking-wider">
-                  {project.category}
+                {/* Content Body */}
+                <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-brand-cyan-light transition-colors line-clamp-1">
+                      {project.title}
+                    </h3>
+                    <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed mb-4">
+                      {project.description}
+                    </p>
+                  </div>
+
+                  <div>
+                    {/* Tags with Safe Array Handling */}
+                    <div className="flex flex-wrap gap-1.5 mb-5">
+                      {Array.isArray(project.tags) && project.tags.length > 0 &&
+                        project.tags.slice(0, 3).map((tag, tIdx) => (
+                          <span
+                            key={tIdx}
+                            className="px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-[10px] text-slate-400 font-medium"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                    </div>
+
+                    {/* View Details Link */}
+                    <div className="flex items-center justify-between pt-4 border-t border-white/5 text-xs font-semibold text-brand-cyan group-hover:text-brand-cyan-light">
+                      <span>View Case Study</span>
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              {/* Content Body */}
-              <div className="p-6 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-2 group-hover:text-brand-cyan-light transition-colors line-clamp-1">
-                    {project.title}
-                  </h3>
-                  <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed mb-4">
-                    {project.description}
-                  </p>
-                </div>
-
-                <div>
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-1.5 mb-5">
-                    {project.tags.slice(0, 3).map((tag, tIdx) => (
-                      <span
-                        key={tIdx}
-                        className="px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-[10px] text-slate-400 font-medium"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* View Details Link */}
-                  <div className="flex items-center justify-between pt-4 border-t border-white/5 text-xs font-semibold text-brand-cyan group-hover:text-brand-cyan-light">
-                    <span>View Case Study</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </div>
+            ))
+          ) : (
+            <div className="col-span-full py-12 text-center text-slate-400 text-sm">
+              No projects found in this category.
             </div>
-          ))}
+          )}
         </div>
       </div>
 
-      {/* Case Study Modal Popup */}
+      {/* Case Study Modal Popup with Safe Array Handling */}
       {selectedProject && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
           <div className="glass-card border border-white/15 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl animate-in zoom-in-95 duration-200">
@@ -287,8 +295,8 @@ export default function Portfolio() {
             {/* Modal Image */}
             <div className="relative h-64 sm:h-72 w-full rounded-2xl overflow-hidden mb-6 bg-slate-900">
               <Image
-                src={selectedProject.image}
-                alt={selectedProject.title}
+                src={selectedProject.image || "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=1200&auto=format&fit=crop"}
+                alt={selectedProject.title || "Project Case Study"}
                 fill
                 className="object-cover"
               />
@@ -304,30 +312,33 @@ export default function Portfolio() {
               </p>
             </div>
 
-            {/* Key Deliverables */}
+            {/* Key Deliverables with Safe Array Handling */}
             <div className="mb-6">
               <h4 className="text-sm font-bold uppercase tracking-wider text-slate-300 mb-3">
                 Key Deliverables & Execution
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {selectedProject.deliverables.map((del, dIdx) => (
-                  <div key={dIdx} className="flex items-center gap-2 text-xs text-slate-200 p-2.5 rounded-xl bg-white/5 border border-white/10">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                    <span>{del}</span>
-                  </div>
-                ))}
+                {Array.isArray(selectedProject.deliverables) && selectedProject.deliverables.length > 0 &&
+                  selectedProject.deliverables.map((del, dIdx) => (
+                    <div key={dIdx} className="flex items-center gap-2 text-xs text-slate-200 p-2.5 rounded-xl bg-white/5 border border-white/10">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                      <span>{del}</span>
+                    </div>
+                  ))}
               </div>
             </div>
 
             {/* Results Highlight */}
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-950/40 to-cyan-950/40 border border-brand-purple/30 mb-8">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-brand-cyan block mb-1">
-                Measured Results & Impact
-              </span>
-              <p className="text-sm font-extrabold text-white">
-                {selectedProject.results}
-              </p>
-            </div>
+            {selectedProject.results && (
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-950/40 to-cyan-950/40 border border-brand-purple/30 mb-8">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-brand-cyan block mb-1">
+                  Measured Results & Impact
+                </span>
+                <p className="text-sm font-extrabold text-white">
+                  {selectedProject.results}
+                </p>
+              </div>
+            )}
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3">

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sparkles, Menu, X, ArrowUpRight, GraduationCap, Briefcase } from "lucide-react";
+import { Menu, X, ArrowUpRight, GraduationCap, Briefcase } from "lucide-react";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -58,22 +58,23 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Navigation Links with Safe Array Handling */}
           <nav className="hidden lg:flex items-center gap-7">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className={`text-sm font-medium transition-colors hover:text-white ${
-                  link.isHighlight
-                    ? "text-brand-cyan flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30 hover:bg-brand-cyan/20"
-                    : "text-slate-300 hover:text-white"
-                }`}
-              >
-                {link.isHighlight && <GraduationCap className="w-3.5 h-3.5 text-brand-cyan" />}
-                {link.name}
-              </a>
-            ))}
+            {Array.isArray(navLinks) && navLinks.length > 0 &&
+              navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors hover:text-white ${
+                    link.isHighlight
+                      ? "text-brand-cyan flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30 hover:bg-brand-cyan/20"
+                      : "text-slate-300 hover:text-white"
+                  }`}
+                >
+                  {link.isHighlight && <GraduationCap className="w-3.5 h-3.5 text-brand-cyan" />}
+                  {link.name}
+                </a>
+              ))}
           </nav>
 
           {/* Right Action Buttons */}
@@ -113,21 +114,22 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="md:hidden glass-nav border-t border-white/10 px-4 pt-4 pb-6 mt-3 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="flex flex-col space-y-2">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  link.isHighlight
-                    ? "bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/30 flex items-center justify-between"
-                    : "text-slate-300 hover:bg-white/5 hover:text-white"
-                }`}
-              >
-                <span>{link.name}</span>
-                {link.isHighlight && <GraduationCap className="w-4 h-4 text-brand-cyan" />}
-              </a>
-            ))}
+            {Array.isArray(navLinks) && navLinks.length > 0 &&
+              navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    link.isHighlight
+                      ? "bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/30 flex items-center justify-between"
+                      : "text-slate-300 hover:bg-white/5 hover:text-white"
+                  }`}
+                >
+                  <span>{link.name}</span>
+                  {link.isHighlight && <GraduationCap className="w-4 h-4 text-brand-cyan" />}
+                </a>
+              ))}
           </div>
 
           <div className="pt-3 border-t border-white/10 flex flex-col gap-2.5">

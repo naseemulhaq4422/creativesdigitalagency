@@ -63,7 +63,9 @@ export default function Testimonials() {
   const filteredTestimonials =
     activeTab === "all"
       ? testimonials
-      : testimonials.filter((t) => t.type === activeTab);
+      : Array.isArray(testimonials)
+      ? testimonials.filter((t) => t && t.type === activeTab)
+      : [];
 
   return (
     <section id="testimonials" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#080B11] relative">
@@ -121,59 +123,65 @@ export default function Testimonials() {
           </button>
         </div>
 
-        {/* Testimonials Grid */}
+        {/* Testimonials Grid with Safe Array Handling */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filteredTestimonials.map((item) => (
-            <div
-              key={item.id}
-              className="glass-card p-8 rounded-2xl relative flex flex-col justify-between border border-white/10 hover:border-brand-purple/40 transition-all duration-300 shadow-xl"
-            >
-              <div>
-                {/* Header row */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-1 text-amber-400">
-                    {[...Array(item.rating)].map((_, rIdx) => (
-                      <Star key={rIdx} className="w-4 h-4 fill-amber-400" />
-                    ))}
-                  </div>
+          {Array.isArray(filteredTestimonials) && filteredTestimonials.length > 0 ? (
+            filteredTestimonials.map((item) => (
+              <div
+                key={item.id}
+                className="glass-card p-8 rounded-2xl relative flex flex-col justify-between border border-white/10 hover:border-brand-purple/40 transition-all duration-300 shadow-xl"
+              >
+                <div>
+                  {/* Header row */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-1 text-amber-400">
+                      {[...Array(Math.max(1, Math.min(5, item.rating || 5)))].map((_, rIdx) => (
+                        <Star key={rIdx} className="w-4 h-4 fill-amber-400" />
+                      ))}
+                    </div>
 
-                  <span
-                    className={`px-3 py-1 rounded-full text-[11px] font-bold border ${
-                      item.type === "client"
-                        ? "bg-brand-purple/15 text-brand-purple-light border-brand-purple/30"
-                        : "bg-brand-cyan/15 text-brand-cyan border-brand-cyan/30"
-                    }`}
-                  >
-                    {item.badge}
-                  </span>
-                </div>
-
-                {/* Quote Body */}
-                <p className="text-slate-200 text-sm sm:text-base leading-relaxed italic mb-8 relative">
-                  <Quote className="w-8 h-8 text-white/5 absolute -top-4 -left-3 pointer-events-none" />
-                  &ldquo;{item.content}&rdquo;
-                </p>
-              </div>
-
-              {/* Author Footer */}
-              <div className="flex items-center justify-between pt-5 border-t border-white/10">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-purple to-brand-cyan flex items-center justify-center font-bold text-white text-sm">
-                    {item.name.charAt(0)}
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-white flex items-center gap-1.5">
-                      <span>{item.name}</span>
-                      <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
-                    </h4>
-                    <span className="text-xs text-slate-400 block">
-                      {item.role} &bull; <strong className="text-slate-300 font-medium">{item.company}</strong>
+                    <span
+                      className={`px-3 py-1 rounded-full text-[11px] font-bold border ${
+                        item.type === "client"
+                          ? "bg-brand-purple/15 text-brand-purple-light border-brand-purple/30"
+                          : "bg-brand-cyan/15 text-brand-cyan border-brand-cyan/30"
+                      }`}
+                    >
+                      {item.badge}
                     </span>
                   </div>
+
+                  {/* Quote Body */}
+                  <p className="text-slate-200 text-sm sm:text-base leading-relaxed italic mb-8 relative">
+                    <Quote className="w-8 h-8 text-white/5 absolute -top-4 -left-3 pointer-events-none" />
+                    &ldquo;{item.content}&rdquo;
+                  </p>
+                </div>
+
+                {/* Author Footer */}
+                <div className="flex items-center justify-between pt-5 border-t border-white/10">
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-purple to-brand-cyan flex items-center justify-center font-bold text-white text-sm">
+                      {item.name ? item.name.charAt(0) : "C"}
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-white flex items-center gap-1.5">
+                        <span>{item.name}</span>
+                        <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+                      </h4>
+                      <span className="text-xs text-slate-400 block">
+                        {item.role} &bull; <strong className="text-slate-300 font-medium">{item.company}</strong>
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="col-span-full py-12 text-center text-slate-400 text-sm">
+              No reviews available in this category yet.
             </div>
-          ))}
+          )}
         </div>
       </div>
     </section>

@@ -25,8 +25,6 @@ interface ServiceItem {
 }
 
 export default function Services() {
-  const [selectedService, setSelectedService] = useState<string | null>(null);
-
   const services: ServiceItem[] = [
     {
       id: "seo-marketing",
@@ -52,7 +50,7 @@ export default function Services() {
       icon: <Code2 className="w-6 h-6 text-brand-cyan" />,
       popular: true,
       features: [
-        "Custom Next.js 15 & React High-Speed Applications",
+        "Custom Next.js & React High-Speed Applications",
         "Full-Stack Web Portals & Custom CMS",
         "Mobile-First Responsive UI with Glassmorphism",
         "Hostinger & Cloud Deployments with 99.9% Uptime",
@@ -142,82 +140,84 @@ export default function Services() {
           </p>
         </div>
 
-        {/* Services Grid */}
+        {/* Services Grid with Safe Array Handling */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-          {services.map((service) => (
-            <div
-              key={service.id}
-              className={`glass-card p-8 rounded-2xl relative flex flex-col justify-between transition-all duration-300 ${
-                service.gradient === "purple"
-                  ? "hover:border-brand-purple/50 hover:shadow-glow-purple"
-                  : service.gradient === "cyan"
-                  ? "hover:border-brand-cyan/50 hover:shadow-glow-cyan"
-                  : "hover:border-pink-500/50 hover:shadow-[0_0_35px_-5px_rgba(236,72,153,0.25)]"
-              } transform hover:-translate-y-1`}
-            >
-              {/* Popular Badge */}
-              {service.popular && (
-                <div className="absolute top-6 right-6 px-3 py-1 rounded-full text-[11px] font-bold bg-brand-purple/20 text-brand-purple-light border border-brand-purple/40">
-                  🔥 Popular
-                </div>
-              )}
-
-              <div>
-                {/* Icon & Category */}
-                <div className="flex items-center gap-3.5 mb-5">
-                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
-                    {service.icon}
-                  </div>
-                  <div>
-                    <span className="text-[11px] uppercase tracking-wider font-semibold text-slate-400 block">
-                      {service.category}
-                    </span>
-                    <h3 className="text-lg font-bold text-white">
-                      {service.title}
-                    </h3>
-                  </div>
-                </div>
-
-                {/* Description */}
-                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed mb-6">
-                  {service.description}
-                </p>
-
-                {/* Features List */}
-                <div className="space-y-2.5 mb-8 pt-4 border-t border-white/5">
-                  {service.features.map((feat, fIdx) => (
-                    <div key={fIdx} className="flex items-start gap-2 text-xs text-slate-300">
-                      <CheckCircle2
-                        className={`w-4 h-4 flex-shrink-0 mt-0.5 ${
-                          service.gradient === "purple"
-                            ? "text-brand-purple"
-                            : service.gradient === "cyan"
-                            ? "text-brand-cyan"
-                            : "text-pink-400"
-                        }`}
-                      />
-                      <span>{feat}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Action Button */}
-              <a
-                href="#contact"
-                className={`w-full py-3 px-4 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-2 border transition-all duration-200 ${
+          {Array.isArray(services) && services.length > 0 &&
+            services.map((service) => (
+              <div
+                key={service.id}
+                className={`glass-card p-8 rounded-2xl relative flex flex-col justify-between transition-all duration-300 ${
                   service.gradient === "purple"
-                    ? "bg-brand-purple/10 border-brand-purple/30 text-purple-200 hover:bg-brand-purple hover:text-white"
+                    ? "hover:border-brand-purple/50 hover:shadow-glow-purple"
                     : service.gradient === "cyan"
-                    ? "bg-brand-cyan/10 border-brand-cyan/30 text-cyan-200 hover:bg-brand-cyan hover:text-[#080B11]"
-                    : "bg-pink-500/10 border-pink-500/30 text-pink-200 hover:bg-pink-500 hover:text-white"
-                }`}
+                    ? "hover:border-brand-cyan/50 hover:shadow-glow-cyan"
+                    : "hover:border-pink-500/50 hover:shadow-[0_0_35px_-5px_rgba(236,72,153,0.25)]"
+                } transform hover:-translate-y-1`}
               >
-                <span>Request {service.title.split("&")[0].trim()}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-          ))}
+                {/* Popular Badge */}
+                {service.popular && (
+                  <div className="absolute top-6 right-6 px-3 py-1 rounded-full text-[11px] font-bold bg-brand-purple/20 text-brand-purple-light border border-brand-purple/40">
+                    🔥 Popular
+                  </div>
+                )}
+
+                <div>
+                  {/* Icon & Category */}
+                  <div className="flex items-center gap-3.5 mb-5">
+                    <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                      {service.icon}
+                    </div>
+                    <div>
+                      <span className="text-[11px] uppercase tracking-wider font-semibold text-slate-400 block">
+                        {service.category}
+                      </span>
+                      <h3 className="text-lg font-bold text-white">
+                        {service.title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-slate-300 text-xs sm:text-sm leading-relaxed mb-6">
+                    {service.description}
+                  </p>
+
+                  {/* Features List with Safe Array Handling */}
+                  <div className="space-y-2.5 mb-8 pt-4 border-t border-white/5">
+                    {Array.isArray(service.features) && service.features.length > 0 &&
+                      service.features.map((feat, fIdx) => (
+                        <div key={fIdx} className="flex items-start gap-2 text-xs text-slate-300">
+                          <CheckCircle2
+                            className={`w-4 h-4 flex-shrink-0 mt-0.5 ${
+                              service.gradient === "purple"
+                                ? "text-brand-purple"
+                                : service.gradient === "cyan"
+                                ? "text-brand-cyan"
+                                : "text-pink-400"
+                            }`}
+                          />
+                          <span>{feat}</span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                {/* Action Button */}
+                <a
+                  href="#contact"
+                  className={`w-full py-3 px-4 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-2 border transition-all duration-200 ${
+                    service.gradient === "purple"
+                      ? "bg-brand-purple/10 border-brand-purple/30 text-purple-200 hover:bg-brand-purple hover:text-white"
+                      : service.gradient === "cyan"
+                      ? "bg-brand-cyan/10 border-brand-cyan/30 text-cyan-200 hover:bg-brand-cyan hover:text-[#080B11]"
+                      : "bg-pink-500/10 border-pink-500/30 text-pink-200 hover:bg-pink-500 hover:text-white"
+                  }`}
+                >
+                  <span>Request {service.title ? service.title.split("&")[0].trim() : "Service"}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            ))}
         </div>
       </div>
     </section>

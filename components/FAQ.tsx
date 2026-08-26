@@ -1,7 +1,7 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
-import { ChevronDown, ChevronUp, HelpCircle, Sparkles } from "lucide-react";
+import { ChevronDown, ChevronUp, HelpCircle } from "lucide-react";
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -50,36 +50,37 @@ export default function FAQ() {
           </p>
         </div>
 
-        {/* Accordion List */}
+        {/* Accordion List with Safe Array Handling */}
         <div className="space-y-4">
-          {faqs.map((faq, idx) => (
-            <div
-              key={idx}
-              className="glass-card rounded-2xl border border-white/10 overflow-hidden transition-all duration-200"
-            >
-              <button
-                onClick={() => toggle(idx)}
-                className="w-full p-6 text-left flex items-center justify-between gap-4 focus:outline-none"
+          {Array.isArray(faqs) && faqs.length > 0 &&
+            faqs.map((faq, idx) => (
+              <div
+                key={idx}
+                className="glass-card rounded-2xl border border-white/10 overflow-hidden transition-all duration-200"
               >
-                <span className="text-base font-bold text-white">
-                  {faq.q}
-                </span>
-                <div className="p-2 rounded-xl bg-white/5 text-brand-cyan flex-shrink-0">
-                  {openIndex === idx ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-400" />
-                  )}
-                </div>
-              </button>
+                <button
+                  onClick={() => toggle(idx)}
+                  className="w-full p-6 text-left flex items-center justify-between gap-4 focus:outline-none"
+                >
+                  <span className="text-base font-bold text-white">
+                    {faq.q}
+                  </span>
+                  <div className="p-2 rounded-xl bg-white/5 text-brand-cyan flex-shrink-0">
+                    {openIndex === idx ? (
+                      <ChevronUp className="w-4 h-4" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-slate-400" />
+                    )}
+                  </div>
+                </button>
 
-              {openIndex === idx && (
-                <div className="px-6 pb-6 pt-2 text-sm text-slate-300 leading-relaxed border-t border-white/5 animate-in fade-in duration-200">
-                  {faq.a}
-                </div>
-              )}
-            </div>
-          ))}
+                {openIndex === idx && (
+                  <div className="px-6 pb-6 pt-2 text-sm text-slate-300 leading-relaxed border-t border-white/5 animate-in fade-in duration-200">
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
         </div>
       </div>
     </section>

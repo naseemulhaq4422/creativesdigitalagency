@@ -1,15 +1,14 @@
-﻿"use client";
+"use client";
 
 import React from "react";
-import { Sparkles } from "lucide-react";
 
 export default function TechStack() {
   const tools = [
-    { name: "Next.js 15", category: "Full-Stack Web" },
-    { name: "React 19", category: "UI Architecture" },
+    { name: "Next.js", category: "Full-Stack Web" },
+    { name: "React", category: "UI Architecture" },
     { name: "TypeScript", category: "Type Safety" },
     { name: "Tailwind CSS", category: "Modern Styling" },
-    { name: "Prisma ORM", category: "Database Layer" },
+    { name: "Supabase & Postgres", category: "Database Layer" },
     { name: "Figma", category: "UI/UX & Systems" },
     { name: "Adobe Photoshop", category: "4K Visuals & Thumbnails" },
     { name: "Adobe Illustrator", category: "3D & Vector Logos" },
@@ -28,20 +27,22 @@ export default function TechStack() {
           </p>
         </div>
 
+        {/* Tools Grid with Safe Array Handling */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {tools.map((tool, idx) => (
-            <div
-              key={idx}
-              className="glass-card p-4 rounded-xl text-center border border-white/5 hover:border-brand-purple/30 transition-all duration-200 group"
-            >
-              <div className="text-xs font-extrabold text-slate-200 group-hover:text-brand-cyan transition-colors">
-                {tool.name}
+          {Array.isArray(tools) && tools.length > 0 &&
+            tools.map((tool, idx) => (
+              <div
+                key={idx}
+                className="glass-card p-4 rounded-xl text-center border border-white/5 hover:border-brand-purple/30 transition-all duration-200 group"
+              >
+                <div className="text-xs font-extrabold text-slate-200 group-hover:text-brand-cyan transition-colors">
+                  {tool.name}
+                </div>
+                <div className="text-[10px] text-slate-500 mt-0.5">
+                  {tool.category}
+                </div>
               </div>
-              <div className="text-[10px] text-slate-500 mt-0.5">
-                {tool.category}
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </section>
