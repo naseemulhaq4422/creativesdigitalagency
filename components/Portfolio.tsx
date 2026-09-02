@@ -128,7 +128,7 @@ export default function Portfolio() {
       client: "Hanif Autos Commercial Spares",
       category: "Industrial & Engineering",
       description: "Digital spare parts catalog, localized search engine optimization, and direct WhatsApp ordering system for commercial automotive spare parts buyers.",
-      image: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=80&w=1200&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=1200&auto=format&fit=crop",
       tags: ["Automotive Parts", "Digital Catalog", "Local SEO", "WhatsApp Ordering"],
       deliverables: [
         "Digital Spare Parts Showcase Catalog",
